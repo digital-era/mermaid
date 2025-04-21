@@ -16,13 +16,12 @@
     <h1>AI-Powered Network Operations Architecture</h1>
     <div id="error" style="color: red;"></div>
     <div class="mermaid">
-        graph TD
-            subgraph "数据源 (Data Sources)"
-                A[原始流量 (可选, 抽样)]
-                B[网元内置探针 (CHR/UFDR)]
-            end
-            %% 数据流向
-            A --> B
+ graph TD
+    subgraph "数据源 (Data Sources)"
+        A["原始流量 (可选, 抽样)"]
+        B["网元内置探针 (CHR/UFDR)"]
+    end
+    A --> B
     </div>
     <script>
         window.mermaidParseError = function(err, hash) {
