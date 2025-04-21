@@ -132,8 +132,8 @@
 
 <!-- It's good practice to add a fallback message -->
 <div class="mermaid">
-graph TD
-    subgraph DataSources[数据源]
+    graph TD
+    subgraph DataSources [数据源]
         A[原始流量 (可选, 采样)]
         B[网元内置探针 (CHR/UFDR)]
         C[外部探针 (XDR)]
@@ -144,17 +144,17 @@ graph TD
         H[用户投诉/工单]
     end
 
-    subgraph DataLake[数据湖/统一存储]
+    subgraph DataLake [数据湖/统一存储]
         I[统一数据存储 (原始 & 处理后)]
     end
 
-    subgraph Preprocessing[数据预处理与特征工程]
+    subgraph Preprocessing [数据预处理与特征工程]
         J[数据清洗与规范化]
         K[多源数据关联与融合]
         L[AI驱动的特征提取/生成]
     end
 
-    subgraph AIAnalysis[AI分析引擎]
+    subgraph AIAnalysis [AI分析引擎]
         M[无监督学习 (异常检测, 聚类)]
         O[监督/自监督学习 (预测, 分类)]
         P[深度学习模型 (RNN/LSTM/Transformer, GNN)]
@@ -162,7 +162,7 @@ graph TD
         R[大语言模型/生成式AI (NLP接口, 报告生成)]
     end
 
-    subgraph KnowledgeInsight[知识与洞察层]
+    subgraph KnowledgeInsight [知识与洞察层]
         N[知识图谱 / AI模型库]
         S[实时/离线指标计算]
         T[智能告警与根因分析]
@@ -171,7 +171,7 @@ graph TD
         W[网络优化建议]
     end
 
-    subgraph ApplicationInteraction[应用与交互层]
+    subgraph ApplicationInteraction [应用与交互层]
         X[智能可视化仪表盘]
         Y[自然语言查询接口]
         Z[自动化报告生成]
