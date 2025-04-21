@@ -1,141 +1,7 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <title>Mermaid 图示例</title>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
-    <script>
-        // 自定义 console log 捕获函数
-        const originalConsole = {
-            log: console.log,
-            warn: console.warn,
-            error: console.error,
-            info: console.info
-        };
-
-        // 用于存储日志的数组
-        const consoleLogs = [];
-
-        // 重写 console 方法以捕获日志
-        function captureConsole() {
-            console.log = function (...args) {
-                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
-                consoleLogs.push({ type: 'log', message: message });
-                originalConsole.log.apply(console, args);
-            };
-            console.warn = function (...args) {
-                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
-                consoleLogs.push({ type: 'warn', message: message });
-                originalConsole.warn.apply(console, args);
-            };
-            console.error = function (...args) {
-                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
-                consoleLogs.push({ type: 'error', message: message });
-                originalConsole.error.apply(console, args);
-            };
-            console.info = function (...args) {
-                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
-                consoleLogs.push({ type: 'info', message: message });
-                originalConsole.info.apply(console, args);
-            };
-        }
-
-        // 显示捕获的日志
-        function displayLogs() {
-            const logContainer = document.getElementById('log-container');
-            if (!logContainer) return; // Add check in case element doesn't exist yet
-            logContainer.innerHTML = '<h3>Console Logs</h3>';
-            if (consoleLogs.length === 0) {
-                 const noLogEntry = document.createElement('p');
-                 noLogEntry.textContent = 'No logs captured.';
-                 logContainer.appendChild(noLogEntry);
-            } else {
-                consoleLogs.forEach(log => {
-                    const logEntry = document.createElement('p');
-                    logEntry.style.color = log.type === 'error' ? 'red' : log.type === 'warn' ? 'orange' : 'black';
-                    // Basic HTML escaping for safety
-                    logEntry.textContent = `[${log.type.toUpperCase()}] ${log.message.replace(/</g, "<").replace(/>/g, ">")}`;
-                    logContainer.appendChild(logEntry);
-                });
-            }
-        }
-
-        // 初始化 Mermaid 并捕获日志
-        captureConsole(); // Start capturing logs *before* initializing
-
-        // Ensure DOM is ready before initializing Mermaid
-        document.addEventListener('DOMContentLoaded', (event) => {
-            try {
-                mermaid.initialize({
-                    startOnLoad: true,
-                    theme: 'default',
-                    flowchart: {
-                        useMaxWidth: true
-                    },
-                    suppressErrors: false, // <-- THE FIX
-                    logLevel: 'debug' // Keep debug level for detailed info
-                });
-                 // No need to call mermaid.run() explicitly with startOnLoad: true
-                 console.info("Mermaid initialized."); // Add a log to confirm init
-            } catch (e) {
-                 console.error("Error initializing Mermaid:", e); // Catch potential init errors
-            }
-
-            // Display logs slightly after load, giving Mermaid time to potentially log errors during render
-             // Using requestAnimationFrame might be slightly better than setTimeout sometimes
-            requestAnimationFrame(() => {
-                setTimeout(displayLogs, 500); // Reduced delay slightly
-            });
-        });
-
-
-        // Display logs also on error (though mermaid init might suppress some)
-        window.addEventListener('error', displayLogs);
-
-    </script>
-    <style>
-        .mermaid {
-            background-color: #f8f8f8;
-            padding: 1em;
-            border-radius: 8px;
-            display: flex; /* Use flex to center content */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            overflow: auto; /* Add scrollbars if diagram is too large */
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2em;
-        }
-        h2, h3 {
-            text-align: center;
-        }
-        #log-container {
-            margin-top: 2em;
-            padding: 1em;
-            background-color: #f0f0f0;
-            border-radius: 8px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        #log-container p {
-            margin: 0.2em 0;
-            font-family: monospace;
-            white-space: pre-wrap; /* Wrap long log lines */
-            word-break: break-all; /* Break long words/strings */
-        }
-    </style>
-</head>
-<body>
-
-<h2>AI 网络智能运维平台架构图</h2>
-
-<!-- It's good practice to add a fallback message -->
-<div class="mermaid">
-    graph TD
+graph TD
     subgraph DataSources [数据源]
         A[原始流量_可选采样]
-        B[网元内置探针 (CHR/UFDR)]
+        B[网元内置探针_CHR_UFDR]  %% <-- 修改了这里，去掉了括号
         C[外部探针 (XDR)]
         D[网元日志]
         E[性能计数器 (PM Counters)]
@@ -179,7 +45,7 @@
         BB[运维专家交互界面 (含XAI解释)]
     end
 
-    %% 数据流向
+    %% 数据流向 (Data Flow)
     A --> I
     B --> I
     C --> I
@@ -197,7 +63,7 @@
     L --> Q
     L --> R
 
-    %% AI引擎贡献到知识与洞察
+    %% AI引擎贡献到知识与洞察 (AI Engine to Knowledge/Insight)
     M --- N
     O --- N
     P --- N
@@ -217,7 +83,7 @@
     R --> Y
     R --> Z
 
-    %% 知识库支撑洞察层
+    %% 知识库支撑洞察层 (Knowledge Base supporting Insight)
     N --> S
     N --> T
     N --> U
@@ -225,7 +91,7 @@
     N --> W
     N --> BB
 
-    %% 洞察层驱动应用层
+    %% 洞察层驱动应用层 (Insight drives Application)
     S --> X
     T --> X
     U --> X
@@ -234,7 +100,7 @@
     T --> AA
     W --> AA
 
-    %% 应用层交互与反馈
+    %% 应用层交互与反馈 (Application Interaction & Feedback)
     X --> BB
     Y --> BB
     Z --> BB
@@ -243,11 +109,3 @@
     BB -- 反馈 --> P
     BB -- 反馈 --> Q
     BB -- 反馈 --> R
-</div>
-
-<div id="log-container">
-    <!-- Logs will appear here -->
-</div>
-
-</body>
-</html>
