@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Mermaid 图示例</title>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
     <script>
         mermaid.initialize({
             startOnLoad: true,
-            theme: 'default'
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true
+            }
         });
     </script>
     <style>
@@ -15,6 +18,15 @@
             background-color: #f8f8f8;
             padding: 1em;
             border-radius: 8px;
+            display: flex;
+            justify-content: center;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2em;
+        }
+        h2 {
+            text-align: center;
         }
     </style>
 </head>
@@ -24,7 +36,7 @@
 
 <div class="mermaid">
     graph TD
-        subgraph 数据源 (Data Sources)
+        subgraph DataSources[数据源 (Data Sources)]
             direction LR
             A[原始流量 (Optional, Sampling)]
             B[网元内置探针 (CHR/UFDR)]
@@ -36,17 +48,17 @@
             H[用户投诉/工单 (Tickets)]
         end
     
-        subgraph 数据湖/统一存储 (Data Lake / Unified Storage)
+        subgraph DataLake[数据湖/统一存储 (Data Lake / Unified Storage)]
             I[统一数据存储 (Raw & Processed)]
         end
     
-        subgraph 数据预处理与特征工程 (Preprocessing & Feature Engineering)
+        subgraph Preprocessing[数据预处理与特征工程 (Preprocessing & Feature Engineering)]
             J[数据清洗与规范化]
             K[多源数据关联与融合]
             L[AI驱动的特征提取/生成]
         end
     
-        subgraph AI分析引擎 (AI Analysis Engine)
+        subgraph AIAnalysis[AI分析引擎 (AI Analysis Engine)]
             M[无监督学习 (Anomaly Detection, Clustering)]
             O[监督/自监督学习 (Prediction, Classification)]
             P[深度学习模型 (RNN/LSTM/Transformer, GNN)]
@@ -54,7 +66,7 @@
             R[大语言模型/生成式AI (NLP Interface, Report Generation)]
         end
     
-        subgraph 知识与洞察层 (Knowledge & Insight Layer)
+        subgraph KnowledgeInsight[知识与洞察层 (Knowledge & Insight Layer)]
             N[知识图谱 / AI模型库]
             S[实时/离线指标计算]
             T[智能告警与根因分析]
@@ -63,7 +75,7 @@
             W[网络优化建议]
         end
     
-        subgraph 应用与交互层 (Application & Interaction Layer)
+        subgraph ApplicationInteraction[应用与交互层 (Application & Interaction Layer)]
             X[智能可视化仪表盘]
             Y[自然语言查询接口]
             Z[自动化报告生成]
