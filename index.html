@@ -105,24 +105,24 @@
             L --> M; L --> O; L --> P; L --> Q; L --> R;
 
             %% AI引擎贡献到知识与洞察 (使用 --- 表示非直接数据流)
-            M --- N; O --- N; P --- N; Q --- N; R --- N;  %% 表示贡献或关联到知识库
+            M --- N; O --- N; P --- N; Q --- N; R --- N;  
             M --> T; M --> V;
             O --> S; O --> T; O --> U; O --> V;
             P --> S; P --> T; P --> U; P --> V;
             Q --> W;
-            R --> Y; R --> Z; %% LLM支撑NLQ和报告生成
+            R --> Y; R --> Z; 
 
             %% 知识库支撑洞察层
             N --> S; N --> T; N --> U; N --> V; N --> W;
-            N --> BB; %% 知识库信息也可供专家参考
+            N --> BB;
 
             %% 洞察层驱动应用层
-            S --> X; T --> X; U --> X; V --> X; W --> X; %% 洞察结果可视化
-            T --> AA; W --> AA; %% 告警/优化建议驱动自动化
+            S --> X; T --> X; U --> X; V --> X; W --> X; 
+            T --> AA; W --> AA; %% 
 
             %% 应用层交互与反馈
-            X --> BB; Y --> BB; Z --> BB; AA --> BB; %% 各应用组件汇聚到专家界面
-            BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q; %% 专家反馈用于模型优化
+            X --> BB; Y --> BB; Z --> BB; AA --> BB; %% 各
+            BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q; 
     </div>
 
 </body>
