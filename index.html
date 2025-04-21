@@ -54,49 +54,49 @@
     <div class="mermaid">
         graph TD
             subgraph "数据源 (Data Sources)"
-                A["原始流量 (可选, 抽样)"];          %% <-- 添加分号
-                B["网元内置探针 (CHR/UFDR)"];       %% <-- 添加分号
-                C["外部探针 (XDR)"];                %% <-- 添加分号
-                D["网元日志 (Logs)"];               %% <-- 添加分号
-                E["性能 (PM Counters)"];      %% <-- 添加分号
-                F["网络配置 (Configuration)"];      %% <-- 添加分号
-                G["告警 (Alarms)"];             %% <-- 添加分号
-                H["数据用户投诉/工单 (Tickets)"];       %% <-- 添加分号
+                A["原始流量 (可选, 抽样)"];
+                B["网元内置探针 (CHR/UFDR)"];
+                C["外部探针 (XDR)"];
+                D["网元日志 (Logs)"];
+                E["性能 (PM Counters)"];
+                F["网络配置 (Configuration)"];
+                G["告警 (Alarms)"];       
+                H["数据用户投诉/工单 (Tickets)"];
             end
 
             subgraph "数据湖/统一存储 (Data Lake / Unified Storage)"
-                I[统一数据存储 (Raw & Processed)]; %% <-- 添加分号
+                I["统一数据存储 (Raw & Processed)"];
             end
 
             subgraph "数据预处理与特征工程 (Preprocessing & Feature Engineering)"
-                J[数据清洗与规范化];               %% <-- 添加分号
-                K[多源数据关联与融合];             %% <-- 添加分号
-                L[AI驱动的特征提取/生成];         %% <-- 添加分号
+                J["数据清洗与规范化"];
+                K["多源数据关联与融合"];
+                L["AI驱动的特征提取/生成"];
             end
 
             subgraph "AI 分析引擎 (AI Analysis Engine)"
-                M[无监督学习 (Anomaly Detection, Clustering)]; %% <-- 添加分号
-                O[监督/自监督学习 (Prediction, Classification)]; %% <-- 添加分号
-                P[深度学习模型 (RNN/LSTM/Transformer, GNN)];  %% <-- 添加分号
-                Q[强化学习 (Optimization, Policy Recommendation)]; %% <-- 添加分号
-                R[大语言模型/生成式AI (NLP Interface, Report Generation)]; %% <-- 添加分号
+                M["无监督学习 (Anomaly Detection, Clustering)"];
+                O["监督/自监督学习 (Prediction, Classification)"];
+                P["深度学习模型 (RNN/LSTM/Transformer, GNN)"];
+                Q["强化学习 (Optimization, Policy Recommendation)"];
+                R["大语言模型/生成式AI (NLP Interface, Report Generation)"];
             end
 
             subgraph "知识与洞察层 (Knowledge & Insight Layer)"
-                N[知识图谱 / AI模型库];            %% <-- 添加分号
-                S[实时/离线指标计算];             %% <-- 添加分号
-                T[智能告警与根因分析];             %% <-- 添加分号
-                U[趋势预测与风险评估];             %% <-- 添加分号
-                V[用户画像与行为分析];             %% <-- 添加分号
-                W[网络优化建议];                 %% <-- 添加分号
+                N["知识图谱 / AI模型库"];
+                S["实时/离线指标计算"];
+                T["智能告警与根因分析"];
+                U["趋势预测与风险评估"];
+                V["用户画像与行为分析"];
+                W["网络优化建议"];
             end
 
             subgraph "应用与交互层 (Application & Interaction Layer)"
-                X[智能可视化仪表盘];               %% <-- 添加分号
-                Y[自然语言查询接口];               %% <-- 添加分号
-                Z[自动化报告生成];                 %% <-- 添加分号
-                AA[API for Orchestration/Automation]; %% <-- 添加分号
-                BB[运维专家交互界面 (含XAI解释)];  %% <-- 添加分号
+                X["智能可视化仪表盘"];
+                Y["自然语言查询接口"]; 
+                Z["自动化报告生成"];
+                AA["API for Orchestration/Automation"];
+                BB["运维专家交互界面 (含XAI解释)"];
             end
 
             %% 数据流向 (连接语句后加分号是可选的，换行通常足够)
@@ -124,20 +124,6 @@
             X --> BB; Y --> BB; Z --> BB; AA --> BB; %% 各应用组件汇聚到专家界面
             BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q; %% 专家反馈用于模型优化
     </div>
-
-    <!-- (可选) 用于在页面上显示错误的脚本 -->
-    <script>
-        window.mermaidParseError = function(err, hash) {
-           console.error('Mermaid Parse Error Detected:', err, hash);
-           const errorDiv = document.getElementById('error');
-           if (errorDiv) {
-               let message = err instanceof Error ? err.message : String(err);
-               // 尝试清理错误信息
-               message = message.replace(/Parse error on line \d+:\n.*/s, 'Diagram Syntax Error. Check console for details.');
-               errorDiv.innerText = 'Mermaid Diagram Error: ' + message;
-           }
-        };
-    </script>
 
 </body>
 </html>
