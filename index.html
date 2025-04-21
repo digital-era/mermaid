@@ -4,23 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mermaid Flowchart</title>
-    <script src="https://unpkg.com/mermaid@10.9.3/dist/mermaid.min.js"></script>
+    <!-- Use a specific version known to work, or the latest stable -->
+    <script src="https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js"></script>
     <script>
         mermaid.initialize({
             startOnLoad: true,
-            logLevel: 1, // Verbose debugging (1 = debug)
-            theme: 'neutral',
-            securityLevel: 'loose',
+            logLevel: 1, // Verbose debugging (1 = debug, 4 = warn, 5 = error)
+            theme: 'neutral', // 'default', 'forest', 'dark', 'neutral', 'base'
+            securityLevel: 'loose', // Be careful with 'loose' if rendering external content
             flowchart: {
                 useMaxWidth: true,
                 htmlLabels: true,
-                curve: 'basis'
+                curve: 'basis' // Or 'linear', 'step', etc.
             }
         });
-        // Log parsing errors
-        mermaid.parseError = function(err, hash) {
-            console.error('Mermaid Parse Error:', err, hash);
-        };
+
+        // Optional: Log parsing errors to console (useful for debugging)
+        // Note: Your previous override might conflict with the internal error handling
+        // shown in the logs. Using the default or just console.error is often sufficient.
+        // const originalParseError = mermaid.parseError;
+        // mermaid.parseError = function(err, hash) {
+        //    console.error('Mermaid Parse Error:', err, hash);
+        //    if (originalParseError) {
+        //        originalParseError.call(this, err, hash);
+        //    }
+        //    // Display error in HTML as well
+        //    const errorDiv = document.getElementById('error');
+        //    if (errorDiv) {
+        //        errorDiv.innerText = 'Mermaid Diagram Error: ' + err;
+        //    }
+        // };
     </script>
     <style>
         .mermaid {
@@ -29,14 +42,16 @@
             background-color: #f9f9f9;
             padding: 20px;
             border-radius: 5px;
-            min-height: 400px;
-            overflow-x: auto;
+            min-height: 400px; /* Ensure minimum height */
+            overflow: auto; /* Enable scrollbars if content overflows */
+            box-sizing: border-box; /* Include padding in width/height */
         }
-        body { font-family: Arial, sans-serif; }
-        #error { color: red; font-weight: bold; }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #error { color: red; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
+    <h1>AI-Powered Network Operations Architecture</h1>
     <div id="error"></div>
     <div class="mermaid">
         graph TD
@@ -50,17 +65,17 @@
                 G[告警数据 (Alarms)]
                 H[用户投诉/工单 (Tickets)]
             end
-        
+
             subgraph "数据湖/统一存储 (Data Lake / Unified Storage)"
                 I[统一数据存储 (Raw & Processed)]
             end
-        
+
             subgraph "数据预处理与特征工程 (Preprocessing & Feature Engineering)"
                 J[数据清洗与规范化]
                 K[多源数据关联与融合]
                 L[AI驱动的特征提取/生成]
             end
-        
+
             subgraph "AI 分析引擎 (AI Analysis Engine)"
                 M[无监督学习 (Anomaly Detection, Clustering)]
                 O[监督/自监督学习 (Prediction, Classification)]
@@ -68,7 +83,7 @@
                 Q[强化学习 (Optimization, Policy Recommendation)]
                 R[大语言模型/生成式AI (NLP Interface, Report Generation)]
             end
-        
+
             subgraph "知识与洞察层 (Knowledge & Insight Layer)"
                 N[知识图谱 / AI模型库]
                 S[实时/离线指标计算]
@@ -77,7 +92,7 @@
                 V[用户画像与行为分析]
                 W[网络优化建议]
             end
-        
+
             subgraph "应用与交互层 (Application & Interaction Layer)"
                 X[智能可视化仪表盘]
                 Y[自然语言查询接口]
@@ -85,38 +100,54 @@
                 AA[API for Orchestration/Automation]
                 BB[运维专家交互界面 (含XAI解释)]
             end
-        
+
             %% 数据流向
             A --> I; B --> I; C --> I; D --> I; E --> I; F --> I; G --> I; H --> I;
             I --> J; J --> K; K --> L;
             L --> M; L --> O; L --> P; L --> Q; L --> R;
-        
+
             %% AI引擎贡献到知识与洞察
-            M --- N; O --- N; P --- N; Q --- N; R --- N;  % 表示贡献或关联到知识库
+            %% M --- N; O --- N; P --- N; Q --- N; R --- N;  %% 表示贡献或关联到知识库 (Corrected Comment)
+            %% Using separate lines might be clearer if combining links and contributions:
+            M --- N; O --- N; P --- N; Q --- N; R --- N;  %% Contribution to Knowledge Base
+
             M --> T; M --> V;
             O --> S; O --> T; O --> U; O --> V;
             P --> S; P --> T; P --> U; P --> V;
             Q --> W;
-            R --> Y; R --> Z; % LLM支撑NLQ和报告生成
-        
+            R --> Y; R --> Z; %% LLM支撑NLQ和报告生成 (Corrected Comment)
+
             %% 知识库支撑洞察层
             N --> S; N --> T; N --> U; N --> V; N --> W;
-            N --> BB; % 知识库信息也可供专家参考
-        
+            N --> BB; %% 知识库信息也可供专家参考 (Corrected Comment)
+
             %% 洞察层驱动应用层
-            S --> X; T --> X; U --> X; V --> X; W --> X; % 洞察结果可视化
-            T --> AA; W --> AA; % 告警/优化建议驱动自动化
-        
+            S --> X; T --> X; U --> X; V --> X; W --> X; %% 洞察结果可视化 (Corrected Comment)
+            T --> AA; W --> AA; %% 告警/优化建议驱动自动化 (Corrected Comment)
+
             %% 应用层交互与反馈
             %% Y的查询由R处理, Z由R生成 (已在上面定义 R --> Y, R --> Z)
-            X --> BB; Y --> BB; Z --> BB; AA --> BB; % 各应用组件汇聚到专家界面
-            BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q; % 专家反馈用于模型优化
+            X --> BB; Y --> BB; Z --> BB; AA --> BB; %% 各应用组件汇聚到专家界面 (Corrected Comment)
+            BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q; %% 专家反馈用于模型优化 (Corrected Comment)
     </div>
+    <!-- It's generally better practice to put scripts at the end of the body -->
+    <!-- The error display script was moved here -->
     <script>
-        // Display errors in HTML
-        mermaid.parseError = function(err, hash) {
-            document.getElementById('error').innerText = 'Mermaid Error: ' + err;
+        // Optional: Display Mermaid errors directly in the #error div
+        // This can be simpler than overriding parseError completely
+        window.mermaidParseError = function(err, hash) {
+           console.error('Mermaid Parse Error:', err, hash);
+           const errorDiv = document.getElementById('error');
+           if (errorDiv) {
+               // Try to extract a cleaner message if possible
+               let message = err instanceof Error ? err.message : String(err);
+               // Remove the overly technical parts if present
+               message = message.replace(/Parse error on line \d+:\n.*/s, 'Diagram Syntax Error. Check console for details.');
+               errorDiv.innerText = 'Mermaid Diagram Error: ' + message;
+           }
         };
+        // Re-run render if needed after fixing errors, though startOnLoad should handle it.
+        // mermaid.contentLoaded(); // Usually not needed with startOnLoad
     </script>
 </body>
 </html>
