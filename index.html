@@ -8,15 +8,19 @@
     <script>
         mermaid.initialize({
             startOnLoad: true,
-            logLevel: 'debug', // Enable debug logs for troubleshooting
+            logLevel: 1, // Verbose debugging (1 = debug)
             theme: 'neutral',
             securityLevel: 'loose',
             flowchart: {
                 useMaxWidth: true,
                 htmlLabels: true,
-                curve: 'basis' // Smooth connections
+                curve: 'basis'
             }
         });
+        // Log parsing errors
+        mermaid.parseError = function(err, hash) {
+            console.error('Mermaid Parse Error:', err, hash);
+        };
     </script>
     <style>
         .mermaid {
@@ -26,43 +30,46 @@
             padding: 20px;
             border-radius: 5px;
             min-height: 400px;
+            overflow-x: auto;
         }
         body { font-family: Arial, sans-serif; }
+        #error { color: red; font-weight: bold; }
     </style>
 </head>
 <body>
+    <div id="error"></div>
     <div class="mermaid">
         graph TD
-            subgraph 数据源[数据源]
+            subgraph 数据源
                 A[原始流量]
-                B[CHR/UFDR探针]
-                C[XDR探针]
-                D[网元日志]
-                E[PM计数器]
-                F[网络配置]
-                G[告警数据]
-                H[用户工单]
+                B[CHR/UFDR]
+                C[XDR]
+                D[日志]
+                E[计数器]
+                F[配置]
+                G[告警]
+                H[工单]
             end
 
-            subgraph 数据湖[数据湖]
+            subgraph 数据湖
                 I[统一存储]
             end
 
-            subgraph 预处理[数据预处理]
-                J[数据清洗]
-                K[数据融合]
+            subgraph 预处理
+                J[清洗]
+                K[融合]
                 L[特征提取]
             end
 
-            subgraph AI引擎[AI分析引擎]
-                M[无监督学习] --- N{知识图谱};
-                O[监督学习] --- N;
-                P[深度学习(\'s included) --- N;
-                Q[强化学习] --- N;
-                R[生成式AI] --- N;
+            subgraph AI引擎
+                M[无监督学习] --> N[知识图谱]
+                O[监督学习] --> N
+                P[深度学习] --> N
+                Q[强化学习] --> N
+                R[生成式AI] --> N
             end
 
-            subgraph 洞察层[知识与洞察]
+            subgraph 洞察层
                 N[知识图谱]
                 S[指标计算]
                 T[告警分析]
@@ -71,32 +78,38 @@
                 W[优化建议]
             end
 
-            subgraph 应用层[应用与交互]
-                X[可视化仪表盘]
-                Y[自然语言接口]
+            subgraph 应用层
+                X[仪表盘]
+                Y[语言接口]
                 Z[报告生成]
-                AA[API接口]
+                AA[API]
                 BB[运维界面]
             end
 
-            A --> I; B --> I; C --> I; D --> I; E --> I; F --> I; G --> I; H --> I;
-            I --> J; J --> K; K --> L;
-            L --> M; L --> O; L --> P; L --> Q; L --> R;
-            M --> T; M --> V;
-            O --> S; O --> T; O --> U; O --> V;
-            P --> S; P --> T; P --> U;说的;
-            Q --> W;
-            R --> Y; R --> Z;
+            A --> I; B --> I; C --> I; D --> I; E --> I; F --> I; G --> I; H --> I
+            I --> J; J --> K; K --> L
+            L --> M; L --> O; L --> P; L --> Q; L --> R
+            M --> T; M --> V
+            O --> S; O --> T; O --> U; O --> V
+            P --> S; P --> T; P --> U; P --> V
+            Q --> W
+            R --> Y; R --> Z
 
-            N --> S; N --> T; N --> U; N --> V; N --> W;
-            N --> BB;
+            N --> S; N --> T; N --> U; N --> V; N --> W; N --> BB
+            S --> X; T --> X; U --> X; V --> X; W --> X
+            T --> AA; W --> AA
+            Y --> R; Z --> R
+            X --> BB; Y --> BB; Z --> BB; AA --> BB
 
-            S --> X; T --> X; U --> X; V --> X; W --> X;
-            T --> AA; W --> AA;
-            Y --> R; Z --> R;
-            X --> BB; Y --> BB; Z --> BB; AA --> BB;
-
-            BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q;
+            BB -->|Feedback| O
+            BB -->|Feedback| P
+            BB -->|Feedback| Q
     </div>
+    <script>
+        // Display errors in HTML
+        mermaid.parseError = function(err, hash) {
+            document.getElementById('error').innerText = 'Mermaid Error: ' + err;
+        };
+    </script>
 </body>
 </html>
