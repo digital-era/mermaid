@@ -1,3 +1,5 @@
+```markdown
+```mermaid
 graph TD
     subgraph "数据源 (Data Sources)"
         A[原始流量 (可选, 抽样)]
