@@ -5,12 +5,64 @@
     <title>Mermaid 图示例</title>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
     <script>
+        // 自定义 console log 捕获函数
+        const originalConsole = {
+            log: console.log,
+            warn: console.warn,
+            error: console.error,
+            info: console.info
+        };
+
+        // 用于存储日志的数组
+        const consoleLogs = [];
+
+        // 重写 console 方法以捕获日志
+        function captureConsole() {
+            console.log = function (...args) {
+                consoleLogs.push({ type: 'log', message: args.join(' ') });
+                originalConsole.log.apply(console, args);
+            };
+            console.warn = function (...args) {
+                consoleLogs.push({ type: 'warn', message: args.join(' ') });
+                originalConsole.warn.apply(console, args);
+            };
+            console.error = function (...args) {
+                consoleLogs.push({ type: 'error', message: args.join(' ') });
+                originalConsole.error.apply(console, args);
+            };
+            console.info = function (...args) {
+                consoleLogs.push({ type: 'info', message: args.join(' ') });
+                originalConsole.info.apply(console, args);
+            };
+        }
+
+        // 显示捕获的日志
+        function displayLogs() {
+            const logContainer = document.getElementById('log-container');
+            logContainer.innerHTML = '<h3>Console Logs</h3>';
+            consoleLogs.forEach(log => {
+                const logEntry = document.createElement('p');
+                logEntry.style.color = log.type === 'error' ? 'red' : log.type === 'warn' ? 'orange' : 'black';
+                logEntry.textContent = `[${log.type.toUpperCase()}] ${log.message}`;
+                logContainer.appendChild(logEntry);
+            });
+        }
+
+        // 初始化 Mermaid 并捕获日志
+        captureConsole();
         mermaid.initialize({
             startOnLoad: true,
             theme: 'default',
             flowchart: {
                 useMaxWidth: true
-            }
+            },
+            suppressErrors: true, // 抑制解析错误
+            logLevel: 'debug' // 启用详细日志
+        });
+
+        // 在图表渲染后显示日志
+        window.addEventListener('load', () => {
+            setTimeout(displayLogs, 1000); // 延迟显示日志，确保渲染完成
         });
     </script>
     <style>
@@ -25,8 +77,20 @@
             font-family: Arial, sans-serif;
             margin: 2em;
         }
-        h2 {
+        h2, h3 {
             text-align: center;
+        }
+        #log-container {
+            margin-top: 2em;
+            padding: 1em;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #log-container p {
+            margin: 0.2em 0;
+            font-family: monospace;
         }
     </style>
 </head>
@@ -36,37 +100,36 @@
 
 <div class="mermaid">
     graph TD
-        subgraph DataSources[数据源 (Data Sources)]
-            direction LR
-            A[原始流量 (Optional, Sampling)]
+        subgraph DataSources[数据源]
+            A[原始流量 (可选, 采样)]
             B[网元内置探针 (CHR/UFDR)]
             C[外部探针 (XDR)]
-            D[网元日志 (Logs)]
+            D[网元日志]
             E[性能计数器 (PM Counters)]
-            F[网络配置 (Configuration)]
-            G[告警数据 (Alarms)]
-            H[用户投诉/工单 (Tickets)]
+            F[网络配置]
+            G[告警数据]
+            H[用户投诉/工单]
         end
     
-        subgraph DataLake[数据湖/统一存储 (Data Lake / Unified Storage)]
-            I[统一数据存储 (Raw & Processed)]
+        subgraph DataLake[数据湖/统一存储]
+            I[统一数据存储 (原始 & 处理后)]
         end
     
-        subgraph Preprocessing[数据预处理与特征工程 (Preprocessing & Feature Engineering)]
+        subgraph Preprocessing[数据预处理与特征工程]
             J[数据清洗与规范化]
             K[多源数据关联与融合]
             L[AI驱动的特征提取/生成]
         end
     
-        subgraph AIAnalysis[AI分析引擎 (AI Analysis Engine)]
-            M[无监督学习 (Anomaly Detection, Clustering)]
-            O[监督/自监督学习 (Prediction, Classification)]
+        subgraph AIAnalysis[AI分析引擎]
+            M[无监督学习 (异常检测, 聚类)]
+            O[监督/自监督学习 (预测, 分类)]
             P[深度学习模型 (RNN/LSTM/Transformer, GNN)]
-            Q[强化学习 (Optimization, Policy Recommendation)]
-            R[大语言模型/生成式AI (NLP Interface, Report Generation)]
+            Q[强化学习 (优化, 策略推荐)]
+            R[大语言模型/生成式AI (NLP接口, 报告生成)]
         end
     
-        subgraph KnowledgeInsight[知识与洞察层 (Knowledge & Insight Layer)]
+        subgraph KnowledgeInsight[知识与洞察层]
             N[知识图谱 / AI模型库]
             S[实时/离线指标计算]
             T[智能告警与根因分析]
@@ -75,11 +138,11 @@
             W[网络优化建议]
         end
     
-        subgraph ApplicationInteraction[应用与交互层 (Application & Interaction Layer)]
+        subgraph ApplicationInteraction[应用与交互层]
             X[智能可视化仪表盘]
             Y[自然语言查询接口]
             Z[自动化报告生成]
-            AA[API for Orchestration/Automation]
+            AA[编排/自动化API]
             BB[运维专家交互界面 (含XAI解释)]
         end
     
@@ -143,11 +206,13 @@
         Y --> BB
         Z --> BB
         AA --> BB
-        BB -- Feedback --> O
-        BB -- Feedback --> P
-        BB -- Feedback --> Q
-        BB -- Feedback --> R
+        BB -- 反馈 --> O
+        BB -- 反馈 --> P
+        BB -- 反馈 --> Q
+        BB -- 反馈 --> R
 </div>
+
+<div id="log-container"></div>
 
 </body>
 </html>
