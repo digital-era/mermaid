@@ -54,14 +54,14 @@
     <div class="mermaid">
         graph TD
             subgraph "数据源 (Data Sources)"
-                A[原始流量 (可选, 抽样)];          %% <-- 添加分号
-                B[网元内置探针 (CHR/UFDR)];       %% <-- 添加分号
-                C[外部探针 (XDR)];                %% <-- 添加分号
-                D[网元日志 (Logs)];               %% <-- 添加分号
-                E[性能计数器 (PM Counters)];      %% <-- 添加分号
-                F[网络配置 (Configuration)];      %% <-- 添加分号
-                G[告警数据 (Alarms)];             %% <-- 添加分号
-                H[用户投诉/工单 (Tickets)];       %% <-- 添加分号
+                A["原始流量 (可选, 抽样)"];          %% <-- 添加分号
+                B["网元内置探针 (CHR/UFDR)"];       %% <-- 添加分号
+                C["外部探针 (XDR)"];                %% <-- 添加分号
+                D["网元日志 (Logs)"];               %% <-- 添加分号
+                E["性能 (PM Counters)"];      %% <-- 添加分号
+                F["网络配置 (Configuration)"];      %% <-- 添加分号
+                G["告警 (Alarms)"];             %% <-- 添加分号
+                H["数据用户投诉/工单 (Tickets)"];       %% <-- 添加分号
             end
 
             subgraph "数据湖/统一存储 (Data Lake / Unified Storage)"
