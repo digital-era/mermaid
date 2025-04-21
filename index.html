@@ -19,19 +19,23 @@
         // 重写 console 方法以捕获日志
         function captureConsole() {
             console.log = function (...args) {
-                consoleLogs.push({ type: 'log', message: args.join(' ') });
+                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+                consoleLogs.push({ type: 'log', message: message });
                 originalConsole.log.apply(console, args);
             };
             console.warn = function (...args) {
-                consoleLogs.push({ type: 'warn', message: args.join(' ') });
+                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+                consoleLogs.push({ type: 'warn', message: message });
                 originalConsole.warn.apply(console, args);
             };
             console.error = function (...args) {
-                consoleLogs.push({ type: 'error', message: args.join(' ') });
+                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+                consoleLogs.push({ type: 'error', message: message });
                 originalConsole.error.apply(console, args);
             };
             console.info = function (...args) {
-                consoleLogs.push({ type: 'info', message: args.join(' ') });
+                const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+                consoleLogs.push({ type: 'info', message: message });
                 originalConsole.info.apply(console, args);
             };
         }
@@ -39,39 +43,65 @@
         // 显示捕获的日志
         function displayLogs() {
             const logContainer = document.getElementById('log-container');
+            if (!logContainer) return; // Add check in case element doesn't exist yet
             logContainer.innerHTML = '<h3>Console Logs</h3>';
-            consoleLogs.forEach(log => {
-                const logEntry = document.createElement('p');
-                logEntry.style.color = log.type === 'error' ? 'red' : log.type === 'warn' ? 'orange' : 'black';
-                logEntry.textContent = `[${log.type.toUpperCase()}] ${log.message}`;
-                logContainer.appendChild(logEntry);
-            });
+            if (consoleLogs.length === 0) {
+                 const noLogEntry = document.createElement('p');
+                 noLogEntry.textContent = 'No logs captured.';
+                 logContainer.appendChild(noLogEntry);
+            } else {
+                consoleLogs.forEach(log => {
+                    const logEntry = document.createElement('p');
+                    logEntry.style.color = log.type === 'error' ? 'red' : log.type === 'warn' ? 'orange' : 'black';
+                    // Basic HTML escaping for safety
+                    logEntry.textContent = `[${log.type.toUpperCase()}] ${log.message.replace(/</g, "<").replace(/>/g, ">")}`;
+                    logContainer.appendChild(logEntry);
+                });
+            }
         }
 
         // 初始化 Mermaid 并捕获日志
-        captureConsole();
-        mermaid.initialize({
-            startOnLoad: true,
-            theme: 'default',
-            flowchart: {
-                useMaxWidth: true
-            },
-            suppressErrors: true, // 抑制解析错误
-            logLevel: 'debug' // 启用详细日志
+        captureConsole(); // Start capturing logs *before* initializing
+
+        // Ensure DOM is ready before initializing Mermaid
+        document.addEventListener('DOMContentLoaded', (event) => {
+            try {
+                mermaid.initialize({
+                    startOnLoad: true,
+                    theme: 'default',
+                    flowchart: {
+                        useMaxWidth: true
+                    },
+                    suppressErrors: false, // <-- THE FIX
+                    logLevel: 'debug' // Keep debug level for detailed info
+                });
+                 // No need to call mermaid.run() explicitly with startOnLoad: true
+                 console.info("Mermaid initialized."); // Add a log to confirm init
+            } catch (e) {
+                 console.error("Error initializing Mermaid:", e); // Catch potential init errors
+            }
+
+            // Display logs slightly after load, giving Mermaid time to potentially log errors during render
+             // Using requestAnimationFrame might be slightly better than setTimeout sometimes
+            requestAnimationFrame(() => {
+                setTimeout(displayLogs, 500); // Reduced delay slightly
+            });
         });
 
-        // 在图表渲染后显示日志
-        window.addEventListener('load', () => {
-            setTimeout(displayLogs, 1000); // 延迟显示日志，确保渲染完成
-        });
+
+        // Display logs also on error (though mermaid init might suppress some)
+        window.addEventListener('error', displayLogs);
+
     </script>
     <style>
         .mermaid {
             background-color: #f8f8f8;
             padding: 1em;
             border-radius: 8px;
-            display: flex;
-            justify-content: center;
+            display: flex; /* Use flex to center content */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            overflow: auto; /* Add scrollbars if diagram is too large */
         }
         body {
             font-family: Arial, sans-serif;
@@ -91,6 +121,8 @@
         #log-container p {
             margin: 0.2em 0;
             font-family: monospace;
+            white-space: pre-wrap; /* Wrap long log lines */
+            word-break: break-all; /* Break long words/strings */
         }
     </style>
 </head>
@@ -98,121 +130,124 @@
 
 <h2>AI 网络智能运维平台架构图</h2>
 
+<!-- It's good practice to add a fallback message -->
 <div class="mermaid">
-    graph TD
-        subgraph DataSources[数据源]
-            A[原始流量 (可选, 采样)]
-            B[网元内置探针 (CHR/UFDR)]
-            C[外部探针 (XDR)]
-            D[网元日志]
-            E[性能计数器 (PM Counters)]
-            F[网络配置]
-            G[告警数据]
-            H[用户投诉/工单]
-        end
-    
-        subgraph DataLake[数据湖/统一存储]
-            I[统一数据存储 (原始 & 处理后)]
-        end
-    
-        subgraph Preprocessing[数据预处理与特征工程]
-            J[数据清洗与规范化]
-            K[多源数据关联与融合]
-            L[AI驱动的特征提取/生成]
-        end
-    
-        subgraph AIAnalysis[AI分析引擎]
-            M[无监督学习 (异常检测, 聚类)]
-            O[监督/自监督学习 (预测, 分类)]
-            P[深度学习模型 (RNN/LSTM/Transformer, GNN)]
-            Q[强化学习 (优化, 策略推荐)]
-            R[大语言模型/生成式AI (NLP接口, 报告生成)]
-        end
-    
-        subgraph KnowledgeInsight[知识与洞察层]
-            N[知识图谱 / AI模型库]
-            S[实时/离线指标计算]
-            T[智能告警与根因分析]
-            U[趋势预测与风险评估]
-            V[用户画像与行为分析]
-            W[网络优化建议]
-        end
-    
-        subgraph ApplicationInteraction[应用与交互层]
-            X[智能可视化仪表盘]
-            Y[自然语言查询接口]
-            Z[自动化报告生成]
-            AA[编排/自动化API]
-            BB[运维专家交互界面 (含XAI解释)]
-        end
-    
-        %% 数据流向
-        A --> I
-        B --> I
-        C --> I
-        D --> I
-        E --> I
-        F --> I
-        G --> I
-        H --> I
-        I --> J
-        J --> K
-        K --> L
-        L --> M
-        L --> O
-        L --> P
-        L --> Q
-        L --> R
-    
-        %% AI引擎贡献到知识与洞察
-        M --- N
-        O --- N
-        P --- N
-        Q --- N
-        R --- N
-        M --> T
-        M --> V
-        O --> S
-        O --> T
-        O --> U
-        O --> V
-        P --> S
-        P --> T
-        P --> U
-        P --> V
-        Q --> W
-        R --> Y
-        R --> Z
-    
-        %% 知识库支撑洞察层
-        N --> S
-        N --> T
-        N --> U
-        N --> V
-        N --> W
-        N --> BB
-    
-        %% 洞察层驱动应用层
-        S --> X
-        T --> X
-        U --> X
-        V --> X
-        W --> X
-        T --> AA
-        W --> AA
-    
-        %% 应用层交互与反馈
-        X --> BB
-        Y --> BB
-        Z --> BB
-        AA --> BB
-        BB -- 反馈 --> O
-        BB -- 反馈 --> P
-        BB -- 反馈 --> Q
-        BB -- 反馈 --> R
+graph TD
+    subgraph DataSources[数据源]
+        A[原始流量 (可选, 采样)]
+        B[网元内置探针 (CHR/UFDR)]
+        C[外部探针 (XDR)]
+        D[网元日志]
+        E[性能计数器 (PM Counters)]
+        F[网络配置]
+        G[告警数据]
+        H[用户投诉/工单]
+    end
+
+    subgraph DataLake[数据湖/统一存储]
+        I[统一数据存储 (原始 & 处理后)]
+    end
+
+    subgraph Preprocessing[数据预处理与特征工程]
+        J[数据清洗与规范化]
+        K[多源数据关联与融合]
+        L[AI驱动的特征提取/生成]
+    end
+
+    subgraph AIAnalysis[AI分析引擎]
+        M[无监督学习 (异常检测, 聚类)]
+        O[监督/自监督学习 (预测, 分类)]
+        P[深度学习模型 (RNN/LSTM/Transformer, GNN)]
+        Q[强化学习 (优化, 策略推荐)]
+        R[大语言模型/生成式AI (NLP接口, 报告生成)]
+    end
+
+    subgraph KnowledgeInsight[知识与洞察层]
+        N[知识图谱 / AI模型库]
+        S[实时/离线指标计算]
+        T[智能告警与根因分析]
+        U[趋势预测与风险评估]
+        V[用户画像与行为分析]
+        W[网络优化建议]
+    end
+
+    subgraph ApplicationInteraction[应用与交互层]
+        X[智能可视化仪表盘]
+        Y[自然语言查询接口]
+        Z[自动化报告生成]
+        AA[编排/自动化API]
+        BB[运维专家交互界面 (含XAI解释)]
+    end
+
+    %% 数据流向
+    A --> I
+    B --> I
+    C --> I
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+    L --> O
+    L --> P
+    L --> Q
+    L --> R
+
+    %% AI引擎贡献到知识与洞察
+    M --- N
+    O --- N
+    P --- N
+    Q --- N
+    R --- N
+    M --> T
+    M --> V
+    O --> S
+    O --> T
+    O --> U
+    O --> V
+    P --> S
+    P --> T
+    P --> U
+    P --> V
+    Q --> W
+    R --> Y
+    R --> Z
+
+    %% 知识库支撑洞察层
+    N --> S
+    N --> T
+    N --> U
+    N --> V
+    N --> W
+    N --> BB
+
+    %% 洞察层驱动应用层
+    S --> X
+    T --> X
+    U --> X
+    V --> X
+    W --> X
+    T --> AA
+    W --> AA
+
+    %% 应用层交互与反馈
+    X --> BB
+    Y --> BB
+    Z --> BB
+    AA --> BB
+    BB -- 反馈 --> O
+    BB -- 反馈 --> P
+    BB -- 反馈 --> Q
+    BB -- 反馈 --> R
 </div>
 
-<div id="log-container"></div>
+<div id="log-container">
+    <!-- Logs will appear here -->
+</div>
 
 </body>
 </html>
