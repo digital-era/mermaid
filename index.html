@@ -2,23 +2,32 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Mermaid 调试版</title>
+    <title>AI 网络智能运维架构图 (Mermaid)</title>
     <style>
-        body {
-            font-family: "Microsoft YaHei", sans-serif;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .mermaid {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+        body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
+        .mermaid { background: #fff; padding: 20px; border-radius: 8px; }
     </style>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+        mermaid.initialize({ startOnLoad: false, logLevel: 'debug' });
+
+        const graphText = document.getElementById('graph-definition').textContent;
+        console.log("📄 Mermaid Graph Definition:\n", graphText);
+
+        try {
+            mermaid.parse(graphText);
+            console.log("✅ Mermaid 语法检查通过");
+
+            document.getElementById('graph-container').innerHTML = graphText;
+            mermaid.run();
+        } catch (e) {
+            console.error("❌ Mermaid 解析失败：", e);
+        }
+    </script>
 </head>
 <body>
-    <h1>Mermaid 架构图调试版</h1>
+    <h2>AI 网络智能运维架构图</h2>
     <div id="graph-container" class="mermaid"></div>
 
     <pre id="graph-definition" style="display:none">
@@ -34,28 +43,106 @@ graph TD
         G[告警数据 (Alarms)]
         H[用户投诉/工单 (Tickets)]
     end
-    %% 省略后面...
 
+    subgraph 数据湖/统一存储 (Data Lake / Unified Storage)
+        I[统一数据存储 (Raw & Processed)]
+    end
+
+    subgraph 数据预处理与特征工程 (Preprocessing & Feature Engineering)
+        J[数据清洗与规范化]
+        K[多源数据关联与融合]
+        L[AI驱动的特征提取/生成]
+    end
+
+    subgraph AI分析引擎 (AI Analysis Engine)
+        M[无监督学习 (Anomaly Detection, Clustering)]
+        O[监督/自监督学习 (Prediction, Classification)]
+        P[深度学习模型 (RNN/LSTM/Transformer, GNN)]
+        Q[强化学习 (Optimization, Policy Recommendation)]
+        R[大语言模型/生成式AI (NLP Interface, Report Generation)]
+    end
+
+    subgraph 知识与洞察层 (Knowledge & Insight Layer)
+        N[知识图谱 / AI模型库]
+        S[实时/离线指标计算]
+        T[智能告警与根因分析]
+        U[趋势预测与风险评估]
+        V[用户画像与行为分析]
+        W[网络优化建议]
+    end
+
+    subgraph 应用与交互层 (Application & Interaction Layer)
+        X[智能可视化仪表盘]
+        Y[自然语言查询接口]
+        Z[自动化报告生成]
+        AA[API for Orchestration/Automation]
+        BB[运维专家交互界面 (含XAI解释)]
+    end
+
+    %% 数据流向
+    A --> I
+    B --> I
+    C --> I
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+    L --> O
+    L --> P
+    L --> Q
+    L --> R
+
+    %% AI引擎贡献到知识与洞察
+    M --- N
+    O --- N
+    P --- N
+    Q --- N
+    R --- N
+    M --> T
+    M --> V
+    O --> S
+    O --> T
+    O --> U
+    O --> V
+    P --> S
+    P --> T
+    P --> U
+    P --> V
+    Q --> W
+    R --> Y
+    R --> Z
+
+    %% 知识库支撑洞察层
+    N --> S
+    N --> T
+    N --> U
+    N --> V
+    N --> W
+    N --> BB
+
+    %% 洞察层驱动应用层
+    S --> X
+    T --> X
+    U --> X
+    V --> X
+    W --> X
+    T --> AA
+    W --> AA
+
+    %% 应用层交互与反馈
+    X --> BB
+    Y --> BB
+    Z --> BB
+    AA --> BB
+    BB -- Feedback --> O
+    BB -- Feedback --> P
+    BB -- Feedback --> Q
+    BB -- Feedback --> R
     </pre>
-
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-
-        mermaid.initialize({ startOnLoad: false, logLevel: 'debug' });
-
-        const graphText = document.getElementById('graph-definition').textContent;
-        console.log("Mermaid Graph Definition:\n", graphText);
-
-        try {
-            mermaid.parse(graphText);
-            console.log("✅ Mermaid 语法检查通过");
-
-            // 渲染到指定容器
-            document.getElementById('graph-container').innerHTML = graphText;
-            mermaid.run();
-        } catch (error) {
-            console.error("❌ Mermaid 解析失败:", error);
-        }
-    </script>
 </body>
 </html>
