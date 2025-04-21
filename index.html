@@ -49,12 +49,24 @@
 
     <!-- Mermaid 图表容器 -->
     <div class="mermaid">
-        graph TD
-            A[节点 A (中文)]
-            B[节点 B]
-            C{节点 C}
-            A --> C;
-            B --> C;
+        <!-- minimal_test.html 文件中 -->
+        <hr>
+        <h2>尝试你的代码（修正版）</h2>
+
+        <div class="mermaid">
+            graph TD
+                subgraph "数据源" %% 这个注释应该没问题，但如果还有错可以尝试去掉
+                    A[节点 A (中文)];  %% <-- 添加分号
+                    B[节点 B];        %% <-- 添加分号
+                end
+
+                subgraph "处理"
+                    C{节点 C};        %% <-- 添加分号
+                end
+
+                A --> C; %% 连接语句后也可以加分号，但通常换行即可
+                B --> C;
+        </div>
     </div>
 
     <!-- (可选) 用于显示错误的脚本，可以放在这里或head中 -->
