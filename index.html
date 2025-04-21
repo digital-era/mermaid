@@ -1,33 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Mermaid Flowchart</title>
-    <script src="https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js"></script>
-    <script>
-        mermaid.initialize({
-            startOnLoad: true,
-            theme: 'neutral',
-            securityLevel: 'loose'
-        });
-    </script>
-</head>
-<body>
-    <h1>AI-Powered Network Operations Architecture</h1>
-    <div id="error" style="color: red;"></div>
-    <div class="mermaid">
- graph TD
+graph TD
     subgraph "数据源 (Data Sources)"
-        A["原始流量 (可选抽样)"]
-        B["网元内置探针 (CHR/UFDR)"]
+        direction LR
+        A[原始流量 (可选, 抽样)]
+        B[网元内置探针 (CHR/UFDR)]
+        C[外部探针 (XDR)]
+        D[网元日志 (Logs)]
+        E[性能计数器 (PM Counters)]
+        F[网络配置 (Configuration)]
+        G[告警数据 (Alarms)]
+        H[用户投诉/工单 (Tickets)]
     end
-    A --> B
-    </div>
-    <script>
-        window.mermaidParseError = function(err, hash) {
-            console.error('Mermaid Parse Error:', err, hash);
-            document.getElementById('error').innerText = 'Error: ' + err.message;
-        };
-    </script>
-</body>
-</html>
+
+    subgraph "数据湖/统一存储 (Data Lake / Unified Storage)"
+        I[统一数据存储 (Raw & Processed)]
+    end
+
+    subgraph "数据预处理与特征工程 (Preprocessing & Feature Engineering)"
+        J[数据清洗与规范化]
+        K[多源数据关联与融合]
+        L[AI驱动的特征提取/生成]
+    end
+
+    subgraph "AI 分析引擎 (AI Analysis Engine)"
+        M[无监督学习 (Anomaly Detection, Clustering)]
+        O[监督/自监督学习 (Prediction, Classification)]
+        P[深度学习模型 (RNN/LSTM/Transformer, GNN)]
+        Q[强化学习 (Optimization, Policy Recommendation)]
+        R[大语言模型/生成式AI (NLP Interface, Report Generation)]
+    end
+
+    subgraph "知识与洞察层 (Knowledge & Insight Layer)"
+        N[知识图谱 / AI模型库]
+        S[实时/离线指标计算]
+        T[智能告警与根因分析]
+        U[趋势预测与风险评估]
+        V[用户画像与行为分析]
+        W[网络优化建议]
+    end
+
+    subgraph "应用与交互层 (Application & Interaction Layer)"
+        X[智能可视化仪表盘]
+        Y[自然语言查询接口]
+        Z[自动化报告生成]
+        AA[API for Orchestration/Automation]
+        BB[运维专家交互界面 (含XAI解释)]
+    end
+
+    %% 数据流向
+    A --> I; B --> I; C --> I; D --> I; E --> I; F --> I; G --> I; H --> I;
+    I --> J; J --> K; K --> L;
+    L --> M; L --> O; L --> P; L --> Q; L --> R;
+
+    %% AI引擎贡献到知识与洞察
+    %% 表示贡献或关联到知识库
+    M --- N; O --- N; P --- N; Q --- N; R --- N;
+    M --> T; M --> V;
+    O --> S; O --> T; O --> U; O --> V;
+    P --> S; P --> T; P --> U; P --> V;
+    Q --> W;
+    R --> Y; R --> Z;
+
+    %% 知识库支撑洞察层
+    N --> S; N --> T; N --> U; N --> V; N --> W;
+    N --> BB;
+
+    %% 洞察层驱动应用层
+    S --> X; T --> X; U --> X; V --> X; W --> X;
+    T --> AA; W --> AA;
+
+    %% 应用层交互与反馈
+    X --> BB; Y --> BB; Z --> BB; AA --> BB;
+    BB -- Feedback --> O;
+    BB -- Feedback --> P;
+    BB -- Feedback --> Q;
+    BB -- Feedback --> R;  %% 建议增加闭环
