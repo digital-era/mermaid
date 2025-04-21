@@ -50,16 +50,10 @@
     <!-- Mermaid 图表容器 -->
     <div class="mermaid">
         graph TD
-            subgraph "数据源" %% 确保子图标题和 end 匹配
-                A[节点 A (中文)]
-                B[节点 B]
-            end
-
-            subgraph "处理"
-                C{节点 C}
-            end
-
-            A --> C; %% 测试一个简单的连接
+            A[节点 A (中文)]
+            B[节点 B]
+            C{节点 C}
+            A --> C;
             B --> C;
     </div>
 
