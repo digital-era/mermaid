@@ -1,83 +1,38 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mermaid Flowchart - Simplified</title>
-    <!-- 使用你确认可行的版本 -->
-    <script src="https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js"></script>
-    <script>
-        // 使用基本初始化，确保 startOnLoad 为 true
-        mermaid.initialize({
-            startOnLoad: true,
-            logLevel: 1, // 1=debug, 4=warn, 5=error
-            theme: 'neutral' // 可以选用 'default', 'forest', 'dark', 'neutral', 'base'
-            // 你可以稍后根据需要加回 flowchart 的特定配置
-            // flowchart: {
-            //    useMaxWidth: true,
-            //    htmlLabels: true, // 如果确认不需要HTML标签，可以设为 false
-            //    curve: 'basis'
-            // }
-        });
-    </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .mermaid {
-            display: flex;
-            justify-content: center;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-            min-height: 200px; /* 可以根据需要调整 */
-            overflow: auto; /* 如果图表太大，显示滚动条 */
-            box-sizing: border-box;
-        }
-        #error {
-            color: red;
-            font-weight: bold;
-            margin-bottom: 10px;
-            min-height: 1em; /* 即使没错误也占点地方 */
-        }
-    </style>
-</head>
-<body>
-    <h1>AI-Powered Network Operations Architecture (Simplified Example)</h1>
-    <div id="error"></div>
+    graph TD
+        subgraph "数据源 (Data Sources)"
+            A[原始流量 (可选, 抽样)]
+            B[网元内置探针 (CHR/UFDR)]
+            C[外部探针 (XDR)]
+            D[网元日志 (Logs)]
+            E[性能计数器 (PM Counters)]
+            F[网络配置 (Configuration)]
+            G[告警数据 (Alarms)]
+            H[用户投诉/工单 (Tickets)]
+        end
+        // ... other subgraphs ...
 
-    <!-- Mermaid 图表容器 -->
-    <div class="mermaid">
-        <!-- minimal_test.html 文件中 -->
-        <hr>
-        <h2>尝试你的代码（修正版）</h2>
+        %% 数据流向
+        A --> I; B --> I; C --> I; D --> I; E --> I; F --> I; G --> I; H --> I;
+        I --> J; J --> K; K --> L;
+        L --> M; L --> O; L --> P; L --> Q; L --> R;
 
-        <div class="mermaid">
-            graph TD
-              A[节点 A (中文)]
-              B[节点 B]
-              C{节点 C}  /* 如果有节点 C 的话 */
-              A --> C
-              B --> C
-        </div>
-    </div>
+        %% AI引擎贡献到知识与洞察
+        M --- N; O --- N; P --- N; Q --- N; R --- N;  % 表示贡献或关联到知识库  <-- PROBLEM HERE
+        M --> T; M --> V;
+        O --> S; O --> T; O --> U; O --> V;
+        P --> S; P --> T; P --> U; P --> V;
+        Q --> W;
+        R --> Y; R --> Z; % LLM支撑NLQ和报告生成 <-- PROBLEM HERE
 
-    <!-- (可选) 用于显示错误的脚本，可以放在这里或head中 -->
-    <script>
-        // 定义一个全局函数，Mermaid 出错时可能会调用（取决于版本和配置）
-        // 或者你可以依赖 console log (logLevel: 1) 来查看错误
-        window.mermaidParseError = function(err, hash) {
-           console.error('Mermaid Parse Error Detected:', err, hash);
-           const errorDiv = document.getElementById('error');
-           if (errorDiv) {
-               let message = err instanceof Error ? err.message : String(err);
-               // 尝试清理错误信息
-               message = message.replace(/Parse error on line \d+:\n.*/s, 'Diagram Syntax Error. Check console for details.');
-               errorDiv.innerText = 'Mermaid Diagram Error: ' + message;
-           }
-        };
-    </script>
+        %% 知识库支撑洞察层
+        N --> S; N --> T; N --> U; N --> V; N --> W;
+        N --> BB; % 知识库信息也可供专家参考 <-- PROBLEM HERE
 
-</body>
-</html>
+        %% 洞察层驱动应用层
+        S --> X; T --> X; U --> X; V --> X; W --> X; % 洞察结果可视化 <-- PROBLEM HERE
+        T --> AA; W --> AA; % 告警/优化建议驱动自动化 <-- PROBLEM HERE
+
+        %% 应用层交互与反馈
+        %% Y的查询由R处理, Z由R生成 (已在上面定义 R --> Y, R --> Z)
+        X --> BB; Y --> BB; Z --> BB; AA --> BB; % 各应用组件汇聚到专家界面 <-- PROBLEM HERE
+        BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q; % 专家反馈用于模型优化 <-- PROBLEM HERE
