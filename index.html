@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mermaid Flowchart - Fixed</title>
+    <title>Mermaid Flowchart</title>
     <!-- 使用你确认可行的版本 -->
     <script src="https://unpkg.com/mermaid@10.9.0/dist/mermaid.min.js"></script>
     <script>
@@ -11,7 +11,7 @@
         mermaid.initialize({
             startOnLoad: true,
             logLevel: 1, // 1=debug, 4=warn, 5=error
-            theme: 'neutral', // 'default', 'forest', 'dark', 'neutral', 'base'
+            theme: 'dark', // 'default', 'forest', 'dark', 'neutral', 'base'
             // 可以根据需要加回 flowchart 的特定配置
             flowchart: {
                useMaxWidth: true,
@@ -47,28 +47,103 @@
     </style>
 </head>
 <body>
-    <h1>AI-Powered Network Operations Architecture</h1>
+    <h1>AI2.0-Powered Network Data Analytics Architecture</h1>
     <div id="error"></div> <!-- 用于显示潜在的JS错误 -->
 
     <!-- Mermaid 图表容器 -->
     <div class="mermaid">
         graph TD
-            subgraph "数据源 (Data Sources)"
-                A["原始流量 (可选, 抽样)"];
-                B["网元内置探针 (CHR/UFDR)"];
-                C["外部探针 (XDR)"];
-                D["网元日志 (Logs)"];
-                E["性能 (PM Counters)"];
-                F["网络配置 (Configuration)"];
-                G["告警 (Alarms)"];       
-                H["数据用户投诉/工单 (Tickets)"];
+            subgraph "数据源"
+                A["原始流量/可选+采样"];
+                B["网元内置探针"];
+                C["外部探针"];
+                D["网元日志"];
+                E["性能"];
+                F["网络配置"];
+                G["告警"];       
+                H["数据用户投诉/工单"];
             end
 
-            subgraph "数据湖/统一存储 (Data Lake / Unified Storage)"
-                I["统一数据存储 (Raw & Processed)"];
+            subgraph "数据湖/统一存储"
+                I["统一数据存储"];
             end
 
-            subgraph "数据预处理与特征工程 (Preprocessing & Feature Engineering)"
+            subgraph "数据预处理与特征工程"
+                J["数据清洗与规范化"];
+                K["多源数据关联与融合"];
+                L["AI驱动的特征提取/生成"];
+            end
+
+            subgraph "AI 分析引擎"
+                M["无监督学习"];
+                O["监督/自监督学习"];
+                P["深度学习模型"];
+                Q["强化学习"];
+                R["大语言模型/生成式AI"];
+            end
+
+            subgraph "知识与洞察层"
+                N["知识图谱 / AI模型库"];
+                S["实时/离线指标计算"];
+                T["智能告警与根因分析"];
+                U["趋势预测与风险评估"];
+                V["用户画像与行为分析"];
+                W["网络优化建议"];
+            end
+
+            subgraph "应用与交互层"
+                X["智能可视化仪表盘"];
+                Y["自然语言查询接口"]; 
+                Z["自动化报告生成"];
+                AA["API编排/自动化"];
+                BB["运维专家交互界面 (含XAI解释)"];
+            end
+
+            %% 数据流向 (连接语句后加分号是可选的，换行通常足够)
+            A --> I; B --> I; C --> I; D --> I; E --> I; F --> I; G --> I; H --> I;
+            I --> J; J --> K; K --> L;
+            L --> M; L --> O; L --> P; L --> Q; L --> R;
+
+            %% AI引擎贡献到知识与洞察 (使用 --- 表示非直接数据流)
+            M --- N; O --- N; P --- N; Q --- N; R --- N;  
+            M --> T; M --> V;
+            O --> S; O --> T; O --> U; O --> V;
+            P --> S; P --> T; P --> U; P --> V;
+            Q --> W;
+            R --> Y; R --> Z; 
+
+            %% 知识库支撑洞察层
+            N --> S; N --> T; N --> U; N --> V; N --> W;
+            N --> BB;
+
+            %% 洞察层驱动应用层
+            S --> X; T --> X; U --> X; V --> X; W --> X; 
+            T --> AA; W --> AA; 
+
+            %% 应用层交互与反馈
+            X --> BB; Y --> BB; Z --> BB; AA --> BB;
+            BB -- Feedback --> O; BB -- Feedback --> P; BB -- Feedback --> Q; 
+    </div>
+
+    <!-- Mermaid 图表容器 -->
+    <div class="mermaid">
+        graph TD
+            subgraph "Data Sources"
+                A["Original Traffic Optional+Sampling "];
+                B["Embed Probe (CHR/UFDR)"];
+                C["Passive Probe (XDR)"];
+                D["Logs"];
+                E["PM Counters"];
+                F["Configuration"];
+                G["Alarms"];       
+                H["Tickets"];
+            end
+
+            subgraph "Data Lake / Unified Storage"
+                I["Unified Raw Data processing/storage"];
+            end
+
+            subgraph "Preprocessing & Feature Engineering"
                 J["数据清洗与规范化"];
                 K["多源数据关联与融合"];
                 L["AI驱动的特征提取/生成"];
@@ -82,7 +157,7 @@
                 R["大语言模型/生成式AI (NLP Interface, Report Generation)"];
             end
 
-            subgraph "知识与洞察层 (Knowledge & Insight Layer)"
+            subgraph "Knowledge & Insight Layer"
                 N["知识图谱 / AI模型库"];
                 S["实时/离线指标计算"];
                 T["智能告警与根因分析"];
