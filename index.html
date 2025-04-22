@@ -55,8 +55,8 @@
         graph TD
             subgraph "数据源"
                 A["原始流量/可选+采样"];
-                B["网元内置探针"];
-                C["外部探针"];
+                B["内置软探针"];
+                C["外置探针"];
                 D["网元日志"];
                 E["性能"];
                 F["网络配置"];
@@ -75,11 +75,11 @@
             end
 
             subgraph "AI 分析引擎"
-                M["无监督学习"];
-                O["监督/自监督学习"];
-                P["深度学习模型"];
-                Q["强化学习"];
-                R["大语言模型/生成式AI"];
+                M["无监督学习（异常检测，聚类）"];
+                O["监督/自监督学习（预测，分类）"];
+                P["深度学习模型（循环神经网络/长短期记忆网络/Transformer，图神经网络）"];
+                Q["强化学习（优化，策略推荐）"];
+                R["大语言模型/生成式AI（自然语言处理接口 / NLP接口，报告生成）"];
             end
 
             subgraph "知识与洞察层"
@@ -96,7 +96,7 @@
                 Y["自然语言查询接口"]; 
                 Z["自动化报告生成"];
                 AA["API编排/自动化"];
-                BB["运维专家交互界面 (含XAI解释)"];
+                BB["运维专家交互界面 (含AI解释)"];
             end
 
             %% 数据流向 (连接语句后加分号是可选的，换行通常足够)
@@ -130,7 +130,7 @@
         graph TD
             subgraph "Data Sources"
                 A["Original Traffic Optional+Sampling "];
-                B["Embed Probe (CHR/UFDR)"];
+                B["Soft Probe (CHR/UFDR)"];
                 C["Passive Probe (XDR)"];
                 D["Logs"];
                 E["PM Counters"];
@@ -144,34 +144,34 @@
             end
 
             subgraph "Preprocessing & Feature Engineering"
-                J["数据清洗与规范化"];
-                K["多源数据关联与融合"];
-                L["AI驱动的特征提取/生成"];
+                J["Data Cleaning and Normalization"];
+                K["Multi-source Data Association and Fusion "];
+                L["AI-driven Feature Extraction / Generation"];
             end
 
-            subgraph "AI 分析引擎 (AI Analysis Engine)"
-                M["无监督学习 (Anomaly Detection, Clustering)"];
-                O["监督/自监督学习 (Prediction, Classification)"];
-                P["深度学习模型 (RNN/LSTM/Transformer, GNN)"];
-                Q["强化学习 (Optimization, Policy Recommendation)"];
-                R["大语言模型/生成式AI (NLP Interface, Report Generation)"];
+            subgraph "AI Analysis Engine"
+                M["Unsupervised Learning (Anomaly Detection, Clustering)"];
+                O["Supervised / Self-supervised Learning (Prediction, Classification)"];
+                P["Deep Learning Models (RNN/LSTM/Transformer, GNN)"];
+                Q["Reinforcement Learning (Optimization, Policy Recommendation)"];
+                R["Large Language Models (LLMs) / Generative AI (NLP Interface, Report Generation)"];
             end
 
             subgraph "Knowledge & Insight Layer"
-                N["知识图谱 / AI模型库"];
-                S["实时/离线指标计算"];
-                T["智能告警与根因分析"];
-                U["趋势预测与风险评估"];
-                V["用户画像与行为分析"];
-                W["网络优化建议"];
+                N["Knowledge Graph / AI Model Library (or AI Model Repository)"];
+                S["Real-time / Offline Metric Calculation"];
+                T["Intelligent Alerting and Root Cause Analysis"];
+                U["Trend Forecasting and Risk Assessment"];
+                V["User Profiling and Behavioral Analysis"];
+                W["Network Optimization Recommendations"];
             end
 
             subgraph "应用与交互层 (Application & Interaction Layer)"
-                X["智能可视化仪表盘"];
-                Y["自然语言查询接口"]; 
-                Z["自动化报告生成"];
+                X[" Intelligent Visualization Dashboard"];
+                Y["Natural Language Query Interface"]; 
+                Z["Automated Report Generation"];
                 AA["API for Orchestration/Automation"];
-                BB["运维专家交互界面 (含XAI解释)"];
+                BB[" Operations Expert Interface (with AI Explanations) "];
             end
 
             %% 数据流向 (连接语句后加分号是可选的，换行通常足够)
