@@ -12,6 +12,12 @@
             startOnLoad: true,
             logLevel: 1, // 1=debug, 4=warn, 5=error
             theme: 'neutral', // 'default', 'forest', 'dark', 'neutral', 'base'
+            // 在这里添加 themeVariables 来设置字体
+            themeVariables: {
+                fontSize: '16px',                // 设置字体大小，例如 '14px', '1em', '1.1rem' 等
+                fontFamily: '"Microsoft YaHei", Arial, sans-serif' // 设置字体家族，优先使用微软雅黑，然后是 Arial，最后是无衬线字体
+                                                  // 注意：如果字体名称包含空格，最好用引号括起来
+            },
             // 可以根据需要加回 flowchart 的特定配置
             flowchart: {
                useMaxWidth: true,
