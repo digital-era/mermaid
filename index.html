@@ -45,6 +45,19 @@
             overflow: auto;    /* 允许滚动 */
             box-sizing: border-box;
         }
+        .mermaid svg text {
+            font-size: 18px; /* 在这里设置你想要的字体大小 */
+        }
+        .mermaid svg .nodeLabel {
+             /* font-size: 15px; */ /* 只改变节点文字大小 */
+        }
+        .mermaid svg .edgeLabel {
+            /* font-size: 12px; */ /* 只改变边上文字大小 */
+        }
+        /* 设置字体家族也可以用类似方法 */
+        .mermaid svg text {
+            font-family: "Helvetica Neue", Microsoft YaHei, Arial, sans-serif; /* 设置字体 */
+        }
         #error {
             color: red;
             font-weight: bold;
